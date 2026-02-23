@@ -1,0 +1,53 @@
+﻿@model Hackathon25.Models.ViewModels.FilmSecimi
+
+@{
+    ViewData["Title"] = "Film Seçimi";
+}
+
+<div class="page-wrap">
+    <div class="filmform-card shadow-sm">
+
+        <div class="filmform-header">
+            <h2 class="filmform-title">Film Seçimi</h2>
+            <p class="filmform-subtitle">
+                Kişi sayısı: <strong>@Model.KisiSayisi</strong> — Her kişi 1 film girsin.
+            </p>
+        </div>
+
+        <form asp-action="Filmler" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="KisiSayisi" />
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="film-grid">
+                @for (int i = 0; i < Model.Filmler.Count; i++)
+                {
+                    <div class="person-card">
+                        <div class="person-title">Kişi @(i + 1)</div>
+
+                        <label class="form-label mb-2">Film Adı</label>
+                        <input class="form-control form-control-lg"
+                               asp-for="Filmler[i].filmAd"
+                               placeholder="Örn: Inception" />
+                        <span class="text-danger" asp-validation-for="Filmler[i].filmAd"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="filmform-actions">
+                <button type="submit" class="btn film-btn-primary">
+                    Filmleri Gönder →
+                </button>
+
+                <a asp-action="Kisi" class="btn film-btn-secondary ms-2">
+                    Geri
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
